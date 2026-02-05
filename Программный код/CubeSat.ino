@@ -11,7 +11,9 @@
 #define PIN_SERVO_H 7
 #define PIN_SERVO_V 8
 
-#define del 500
+#define del 3000
+#define default_h 120
+#define default_v 110
 
 RF24 radio(PIN_RF_CE, PIN_RF_CSN);
 
@@ -44,8 +46,8 @@ void setup() {
   pinMode(PIN_LASER, OUTPUT);
   servo_h.attach(PIN_SERVO_H);
   servo_v.attach(PIN_SERVO_V);
-  servo_h.write(90);
-  servo_v.write(90);
+  servo_h.write(default_h);
+  servo_v.write(default_v);
 }
 
 // Функция, передающая данные из структуры в станцию через радиомодуль
@@ -73,40 +75,40 @@ void print_data(const Data &x) {
 void move_servos() {
   // 1) Горизонталь
   for (int i=-40;i<=40;i+=10){ 
-    servo_h.write(90+i); 
-    servo_v.write(90); 
+    servo_h.write(default_h+i); 
+    servo_v.write(default_v); 
     send_data(1,i,0); 
     print_data(data);
   }
-  servo_h.write(90);
+  servo_h.write(default_h);
 
   // 2) Вертикаль
   for (int j=-40;j<=40;j+=10){ 
-    servo_v.write(90+j); 
-    servo_h.write(90);
+    servo_v.write(default_v+j); 
+    servo_h.write(default_h);
     send_data(2,0,j); 
     print_data(data);
   }
-  servo_v.write(90);
+  servo_v.write(default_v);
 
   // 3) Диагональ 1
   for (int a=-40;a<=40;a+=10){ 
-    servo_h.write(90+a); 
-    servo_v.write(90+a); 
+    servo_h.write(default_h+a); 
+    servo_v.write(default_v+a); 
     send_data(3,a,a);
     print_data(data);
     }
 
   // 4) Диагональ 2
   for (int a=-40;a<=40;a+=10){ 
-    servo_h.write(90+a); 
-    servo_v.write(90-a); 
+    servo_h.write(default_h+a); 
+    servo_v.write(default_v-a); 
     send_data(4,a,-a);
     print_data(data);
   }
 
-  servo_h.write(90); 
-  servo_v.write(90);
+  servo_h.write(default_h); 
+  servo_v.write(default_v);
   started = false;
   radio.startListening();
 }
@@ -128,3 +130,4 @@ void loop() {
   }
 
 }
+
