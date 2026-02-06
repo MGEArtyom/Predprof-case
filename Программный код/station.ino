@@ -1,3 +1,8 @@
+#include <nRF24L01.h>
+#include <printf.h>
+#include <RF24.h>
+#include <RF24_config.h>
+
 // Подключение библиотек
 #include <SPI.h>
 #include <nRF24L01.h>
@@ -52,8 +57,13 @@ void loop() {
   // Приём данных со станции
   if (radio.available()) {
     radio.read(&data, sizeof(data));
-    Serial.print("state="); Serial.print(data.state);
-    Serial.print(" h=");    Serial.print(data.h);
-    Serial.print(" v=");    Serial.println(data.v);
+    if (data.state == 0) {
+      Serial.print("CubeSat cycle over. Type: start");
+    }
+    else {
+      Serial.print("state="); Serial.print(data.state);
+      Serial.print(" h=");    Serial.print(data.h);
+      Serial.print(" v=");    Serial.println(data.v);
+    }
   }
 }
