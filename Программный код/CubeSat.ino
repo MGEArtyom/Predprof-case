@@ -94,7 +94,7 @@ void move_servos() {
   // 3) Диагональ 1
   for (int a=-40;a<=40;a+=10){ 
     servo_h.write(default_h+a); 
-    servo_v.write(default_v+a); 
+    servo_v.write(default_v+a);
     send_data(3,a,a);
     print_data(data);
     }
@@ -106,9 +106,10 @@ void move_servos() {
     send_data(4,a,-a);
     print_data(data);
   }
-
+  
   servo_h.write(default_h); 
   servo_v.write(default_v);
+  send_data(0, default_h, default_v);
   started = false;
   radio.startListening();
 }
@@ -130,4 +131,3 @@ void loop() {
   }
 
 }
-
